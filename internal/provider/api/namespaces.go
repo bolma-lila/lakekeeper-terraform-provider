@@ -72,42 +72,128 @@ type Namespace struct {
 // containing a reserved character such as "/" stays one path segment.
 func (c *Client) LoadNamespace(ctx context.Context, projectID, warehouseID string, path []string) (*Namespace, error) {
 	const op = "load namespace"
-	u := c.sdk.BaseURL()
-	levels := make([]string, len(path))
-	for i, level := range path {
-		levels[i] = url.PathEscape(level)
-	}
-	base := strings.TrimSuffix(u.EscapedPath(), "/") + "/catalog/v1/" + url.PathEscape(warehouseID) + "/namespaces/"
-	u.RawPath = base + strings.Join(levels, "%1F")
-	unescaped, err := url.PathUnescape(u.RawPath)
-	if err != nil {
-		return nil, fmt.Errorf("%s: build path: %w", op, err)
-	}
-	u.Path = unescaped
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
+	encodedPath, err := EncodeNamespacePath(path)
 	if err != nil {
 		return nil, err
-	}
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("x-project-id", projectID)
-	resp, err := c.sdk.GetConfig().HTTPClient.Do(req)
-	if err != nil {
-		return nil, &Error{err: fmt.Errorf("%s: %w", op, err)}
-	}
-	defer resp.Body.Close()
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, &Error{StatusCode: resp.StatusCode, err: fmt.Errorf("%s: %w", op, err)}
-	}
-	if resp.StatusCode >= 300 {
-		return nil, &Error{StatusCode: resp.StatusCode, err: fmt.Errorf("%s: %s: %s", op, resp.Status, strings.TrimSpace(string(body)))}
 	}
 	var result struct {
 		Namespace  []string          `json:"namespace"`
 		Properties map[string]string `json:"properties"`
 	}
-	if err := json.Unmarshal(body, &result); err != nil {
-		return nil, fmt.Errorf("%s: decode response: %w", op, err)
+	if err := c.catalogGet(ctx, op, projectID, warehouseID, "/namespaces/"+encodedPath, nil, &result); err != nil {
+		return nil, err
 	}
 	return &Namespace{Path: result.Namespace, Properties: result.Properties}, nil
+}
+
+// NamespaceListItem is a namespace as returned by the catalog list endpoint.
+type NamespaceListItem struct {
+	ID    string
+	Parts []string
+}
+
+// ListNamespaces lists the direct child namespaces of a warehouse or namespace.
+// parentParts holds the parent namespace levels (e.g. ["sales", "bronze"]);
+// when empty, it lists the warehouse's top-level namespaces. It follows every
+// catalog page and returns namespace UUIDs.
+func (c *Client) ListNamespaces(ctx context.Context, warehouseID string, parentParts []string) ([]NamespaceListItem, error) {
+	const op = "list namespaces"
+	q := url.Values{}
+	if len(parentParts) > 0 {
+		if _, err := EncodeNamespacePath(parentParts); err != nil {
+			return nil, err
+		}
+		// A query value: url.Values encodes the unit separator as %1F.
+		q.Set("parent", strings.Join(parentParts, "\x1f"))
+	}
+	q.Set("returnUuids", "true")
+	namespaces := []NamespaceListItem{}
+	seen := map[string]bool{}
+	for {
+		var page struct {
+			Namespaces     [][]string `json:"namespaces"`
+			NamespaceUUIDs []string   `json:"namespace-uuids"`
+			NextPageToken  *string    `json:"next-page-token"`
+		}
+		if err := c.catalogGet(ctx, op, "", warehouseID, "/namespaces", q, &page); err != nil {
+			return nil, err
+		}
+		if len(page.NamespaceUUIDs) != len(page.Namespaces) {
+			return nil, fmt.Errorf("%s: catalog returned %d namespace UUIDs for %d namespaces", op, len(page.NamespaceUUIDs), len(page.Namespaces))
+		}
+		for i, parts := range page.Namespaces {
+			namespaces = append(namespaces, NamespaceListItem{
+				ID:    page.NamespaceUUIDs[i],
+				Parts: parts,
+			})
+		}
+		if page.NextPageToken == nil || *page.NextPageToken == "" {
+			break
+		}
+		if seen[*page.NextPageToken] {
+			return nil, fmt.Errorf("%s: repeated page token", op)
+		}
+		seen[*page.NextPageToken] = true
+		q.Set("pageToken", *page.NextPageToken)
+	}
+	return namespaces, nil
+}
+
+// catalogGet sends a GET request to the Iceberg REST catalog API and decodes
+// the JSON response into out. It derives the catalog base URL from the client's
+// management base URL, addresses the warehouse by UUID, and sets the x-project-id
+// header when projectID is not empty.
+func (c *Client) catalogGet(ctx context.Context, op, projectID, warehouseID, escapedPath string, query url.Values, out any) error {
+	u := c.sdk.BaseURL()
+	u.RawPath = strings.TrimSuffix(u.EscapedPath(), "/") + "/catalog/v1/" + url.PathEscape(warehouseID) + escapedPath
+	unescaped, err := url.PathUnescape(u.RawPath)
+	if err != nil {
+		return fmt.Errorf("%s: build path: %w", op, err)
+	}
+	u.Path = unescaped
+	if query != nil {
+		u.RawQuery = query.Encode()
+	}
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Accept", "application/json")
+	if projectID != "" {
+		req.Header.Set("x-project-id", projectID)
+	}
+	resp, err := c.sdk.GetConfig().HTTPClient.Do(req)
+	if err != nil {
+		return &Error{err: fmt.Errorf("%s: %w", op, err)}
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return &Error{StatusCode: resp.StatusCode, err: fmt.Errorf("%s: %w", op, err)}
+	}
+	if resp.StatusCode >= 300 {
+		return &Error{StatusCode: resp.StatusCode, err: fmt.Errorf("%s: %s: %s", op, resp.Status, strings.TrimSpace(string(body)))}
+	}
+	if err := json.Unmarshal(body, out); err != nil {
+		return fmt.Errorf("%s: decode response: %w", op, err)
+	}
+	return nil
+}
+
+// EncodeNamespacePath checks namespace levels and returns them as one path
+// segment of the Iceberg REST API: each level percent-encoded on its own, and
+// the levels joined with the encoded unit separator %1F. Each level must be
+// non-empty and must not contain the unit separator itself.
+func EncodeNamespacePath(parts []string) (string, error) {
+	levels := make([]string, len(parts))
+	for i, part := range parts {
+		if part == "" {
+			return "", fmt.Errorf("namespace levels must be non-empty")
+		}
+		if strings.Contains(part, "\x1f") {
+			return "", fmt.Errorf("namespace levels cannot contain the unit separator \\x1f")
+		}
+		levels[i] = url.PathEscape(part)
+	}
+	return strings.Join(levels, "%1F"), nil
 }
