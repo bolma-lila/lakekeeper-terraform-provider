@@ -118,11 +118,11 @@ func TestRoleReadByIDAndName(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			d := &LakekeeperRoleDataSource{client: client}
+			d := &lakekeeperRoleDataSource{client: client}
 			var schemaResp datasource.SchemaResponse
 			d.Schema(context.Background(), datasource.SchemaRequest{}, &schemaResp)
 			state := tfsdk.State{Schema: schemaResp.Schema}
-			input := LakekeeperRoleDataSourceModel{ProjectID: types.StringValue("p")}
+			input := lakekeeperRoleDataSourceModel{ProjectID: types.StringValue("p")}
 			wantName := "target"
 			if byName {
 				// A configured name keeps its spelling even when Lakekeeper stores another case.
@@ -139,7 +139,7 @@ func TestRoleReadByIDAndName(t *testing.T) {
 			if resp.Diagnostics.HasError() {
 				t.Fatal(resp.Diagnostics)
 			}
-			var result LakekeeperRoleDataSourceModel
+			var result lakekeeperRoleDataSourceModel
 			if diags := resp.State.Get(context.Background(), &result); diags.HasError() {
 				t.Fatal(diags)
 			}

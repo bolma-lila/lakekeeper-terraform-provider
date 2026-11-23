@@ -16,8 +16,8 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &LakekeeperRoleDataSource{}
-	_ datasource.DataSourceWithConfigure = &LakekeeperRoleDataSource{}
+	_ datasource.DataSource              = &lakekeeperRoleDataSource{}
+	_ datasource.DataSourceWithConfigure = &lakekeeperRoleDataSource{}
 )
 
 func init() {
@@ -26,16 +26,16 @@ func init() {
 
 // NewLakekeeperRoleDataSource is a helper function to simplify the provider implementation.
 func NewLakekeeperRoleDataSource() datasource.DataSource {
-	return &LakekeeperRoleDataSource{}
+	return &lakekeeperRoleDataSource{}
 }
 
-// LakekeeperRoleDataSource is the data source implementation.
-type LakekeeperRoleDataSource struct {
+// lakekeeperRoleDataSource is the data source implementation.
+type lakekeeperRoleDataSource struct {
 	client *api.Client
 }
 
-// LakekeeperRoleDataSourceModel describes the data source data model.
-type LakekeeperRoleDataSourceModel struct {
+// lakekeeperRoleDataSourceModel describes the data source data model.
+type lakekeeperRoleDataSourceModel struct {
 	ID          types.String `tfsdk:"id"`
 	RoleID      types.String `tfsdk:"role_id"`
 	ProjectID   types.String `tfsdk:"project_id"`
@@ -47,12 +47,12 @@ type LakekeeperRoleDataSourceModel struct {
 }
 
 // Metadata returns the data source type name.
-func (d *LakekeeperRoleDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+func (d *lakekeeperRoleDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_role"
 }
 
 // Schema defines the schema for the data source.
-func (d *LakekeeperRoleDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *lakekeeperRoleDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: fmt.Sprintf(`The ` + "`lakekeeper_role`" + ` data source retrieves information a lakekeeper role.
 
@@ -77,7 +77,7 @@ func (d *LakekeeperRoleDataSource) Schema(_ context.Context, _ datasource.Schema
 				Required:            true,
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: "Role name within project_id. Matching ignores case, as Lakekeeper does for role names. Name lookup requires one visible match and permission to list the project's roles. Configure exactly one of role_id or name.",
+				MarkdownDescription: "Role name within project_id. Matching ignores case, as Lakekeeper does for role names, and `name` keeps the configured spelling. A name lookup needs one visible match and permission to search the project's roles, and to list them when the search finds no match. Configure exactly one of role_id or name.",
 				Optional:            true,
 				Computed:            true,
 				Validators:          []validator.String{stringvalidator.LengthAtLeast(1)},
@@ -99,7 +99,7 @@ func (d *LakekeeperRoleDataSource) Schema(_ context.Context, _ datasource.Schema
 }
 
 // Configure adds the provider configured client to the data source.
-func (d *LakekeeperRoleDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *lakekeeperRoleDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -109,8 +109,8 @@ func (d *LakekeeperRoleDataSource) Configure(_ context.Context, req datasource.C
 }
 
 // Read refreshes the Terraform state with the latest data.
-func (d *LakekeeperRoleDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var state LakekeeperRoleDataSourceModel
+func (d *lakekeeperRoleDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var state lakekeeperRoleDataSourceModel
 
 	// Read Terraform plan data into the model
 	resp.Diagnostics.Append(req.Config.Get(ctx, &state)...)
@@ -135,11 +135,6 @@ func (d *LakekeeperRoleDataSource) Read(ctx context.Context, req datasource.Read
 		resp.Diagnostics.AddError("Lakekeeper API error occurred", fmt.Sprintf("Unable to read role %s in project %s, %v", selector, projectID, err))
 		return
 	}
-	if role.ProjectID != projectID {
-		resp.Diagnostics.AddError("Role project mismatch", "The returned role does not belong to the requested project.")
-		return
-	}
-
 	state.ID = types.StringValue(fmt.Sprintf("%s/%s", role.ProjectID, role.ID))
 	state.RoleID = types.StringValue(role.ID)
 	state.ProjectID = types.StringValue(role.ProjectID)
@@ -199,7 +194,7 @@ func findRoleByName(ctx context.Context, client *api.Client, projectID, name str
 func matchRoleName(roles []*api.Role, projectID, name string) (*api.Role, error) {
 	var match *api.Role
 	for _, role := range roles {
-		if role.ProjectID != projectID || !strings.EqualFold(role.Name, name) {
+		if !strings.EqualFold(role.ProjectID, projectID) || !strings.EqualFold(role.Name, name) {
 			continue
 		}
 		if match != nil && match.ID != role.ID {

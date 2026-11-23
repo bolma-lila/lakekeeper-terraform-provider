@@ -123,6 +123,19 @@ func TestAccDataLakekeeperRole_byID(t *testing.T) {
 					resource.TestCheckResourceAttrPair("data.lakekeeper_role.by_id", "id", "lakekeeper_role.test", "id"),
 				),
 			},
+			// An upper-case role ID finds the same role.
+			{
+				Config: fmt.Sprintf(`
+				resource "lakekeeper_role" "test" {
+					project_id = %[1]q
+					name       = %[2]q
+				}
+				data "lakekeeper_role" "by_id" {
+					project_id = %[1]q
+					role_id    = upper(lakekeeper_role.test.role_id)
+				}`, project.ID, roleName),
+				Check: resource.TestCheckResourceAttr("data.lakekeeper_role.by_id", "name", roleName),
+			},
 		},
 	})
 }

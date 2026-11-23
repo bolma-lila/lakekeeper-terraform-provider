@@ -37,7 +37,7 @@ data "lakekeeper_role" "scientist" {
 
 ### Optional
 
-- `name` (String) Role name within project_id. Matching ignores case, as Lakekeeper does for role names. Name lookup requires one visible match and permission to list the project's roles. Configure exactly one of role_id or name.
+- `name` (String) Role name within project_id. Matching ignores case, as Lakekeeper does for role names, and `name` keeps the configured spelling. A name lookup needs one visible match and permission to search the project's roles, and to list them when the search finds no match. Configure exactly one of role_id or name.
 - `role_id` (String) The internal ID of the role. Configure exactly one of role_id or name.
 
 ### Read-Only
