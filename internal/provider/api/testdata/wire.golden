@@ -169,6 +169,10 @@
 > GET /management/v1/warehouse/w1
 < *api.Warehouse {"ID":"w1","ProjectID":"p1","Name":"wh","Protected":true,"Status":"active","StorageProfile":{"Bucket":"b","Region":"r","STSEnabled":true,"KeyPrefix":"p","AllowAlternativeProtocols":true,"AssumeRoleARN":"arn:a","AWSKMSKeyARN":"arn:k","Endpoint":"http://e","Flavor":"s3-compat","PathStyleAccess":true,"PushS3DeleteDisabled":false,"RemoteSigningURLStyle":"path","STSRoleARN":"arn:s","STSTokenValiditySeconds":60},"DeleteProfile":{"Type":"soft","ExpirationSeconds":600}}
 
+## ListWarehouses
+> GET /management/v1/warehouse [x-project-id: p1]
+< []api.WarehouseListItem [{"ID":"w1","ProjectID":"p1","Name":"wh","Protected":true},{"ID":"w2","ProjectID":"p1","Name":"other","Protected":false}]
+
 ## DeleteWarehouse
 > DELETE /management/v1/warehouse/w1?force=false
 
@@ -192,10 +196,6 @@
 ## UpdateWarehouseDeleteProfile soft
 > POST /management/v1/warehouse/w1/delete-profile
   {"delete-profile":{"expiration-seconds":600,"type":"soft"}}
-
-## ListWarehouses
-> GET /management/v1/warehouse [x-project-id: p1]
-< []api.WarehouseListItem [{"ID":"w1","ProjectID":"p1","Name":"wh","Protected":true},{"ID":"w2","ProjectID":"p1","Name":"other","Protected":false}]
 
 ## UpdateWarehouseDeleteProfile hard
 > POST /management/v1/warehouse/w1/delete-profile

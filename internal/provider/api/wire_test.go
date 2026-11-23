@@ -192,6 +192,7 @@ func TestWire(t *testing.T) {
 		return c.CreateWarehouse(ctx, "p1", CreateWarehouseRequest{Name: "wh", StorageProfile: &GCSStorageProfile{Bucket: "b"}, StorageCredential: &GCSSystemIdentityCredential{}, DeleteProfile: &DeleteProfile{Type: DeleteProfileTypeSoft, ExpirationSeconds: 600}})
 	})
 	step("GetWarehouse", func() (any, error) { return c.GetWarehouse(ctx, "p1", "w1") })
+	step("ListWarehouses", func() (any, error) { return c.ListWarehouses(ctx, "p1") })
 	step("DeleteWarehouse", func() (any, error) { return none(c.DeleteWarehouse(ctx, "p1", "w1", false)) })
 	step("DeleteWarehouse force", func() (any, error) { return none(c.DeleteWarehouse(ctx, "p1", "w1", true)) })
 	step("ActivateWarehouse", func() (any, error) { return none(c.ActivateWarehouse(ctx, "p1", "w1")) })
@@ -201,8 +202,6 @@ func TestWire(t *testing.T) {
 	step("UpdateWarehouseDeleteProfile soft", func() (any, error) {
 		return none(c.UpdateWarehouseDeleteProfile(ctx, "p1", "w1", DeleteProfile{Type: DeleteProfileTypeSoft, ExpirationSeconds: 600}))
 	})
-
-	step("ListWarehouses", func() (any, error) { return c.ListWarehouses(ctx, "p1") })
 	step("UpdateWarehouseDeleteProfile hard", func() (any, error) {
 		return none(c.UpdateWarehouseDeleteProfile(ctx, "p1", "w1", DeleteProfile{Type: DeleteProfileTypeHard}))
 	})

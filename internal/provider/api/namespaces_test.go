@@ -48,7 +48,9 @@ func TestCatalogURLBuilding(t *testing.T) {
 		{"empty base path", "", "/catalog/v1/22222222-2222-4222-8222-222222222222/namespaces"},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
+			called := false
 			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				called = true
 				if r.URL.Path != tc.wantPath {
 					t.Errorf("path=%q, want %q", r.URL.Path, tc.wantPath)
 				}
@@ -61,7 +63,12 @@ func TestCatalogURLBuilding(t *testing.T) {
 				t.Fatal(err)
 			}
 			var result struct{}
-			_ = client.catalogGet(context.Background(), "test", "proj", warehouse, "/namespaces", nil, &result)
+			if err := client.catalogGet(context.Background(), "test", "proj", warehouse, "/namespaces", nil, &result); err != nil {
+				t.Fatal(err)
+			}
+			if !called {
+				t.Fatal("no request was sent")
+			}
 		})
 	}
 }
@@ -69,7 +76,9 @@ func TestCatalogURLBuilding(t *testing.T) {
 func TestCatalogURLWithProjectHeader(t *testing.T) {
 	warehouse := "22222222-2222-4222-8222-222222222222"
 	project := "11111111-1111-4111-8111-111111111111"
+	called := false
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		called = true
 		if got := r.Header.Get("x-project-id"); got != project {
 			t.Errorf("x-project-id header=%q, want %q", got, project)
 		}
@@ -85,7 +94,12 @@ func TestCatalogURLWithProjectHeader(t *testing.T) {
 		t.Fatal(err)
 	}
 	var result struct{}
-	_ = client.catalogGet(context.Background(), "test", project, warehouse, "/namespaces/a", nil, &result)
+	if err := client.catalogGet(context.Background(), "test", project, warehouse, "/namespaces/a", nil, &result); err != nil {
+		t.Fatal(err)
+	}
+	if !called {
+		t.Fatal("no request was sent")
+	}
 }
 
 func TestListNamespacesPagination(t *testing.T) {
