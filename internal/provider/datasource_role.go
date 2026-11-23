@@ -123,14 +123,16 @@ func (d *LakekeeperRoleDataSource) Read(ctx context.Context, req datasource.Read
 
 	var role *api.Role
 	var err error
+	var selector string
 	if state.RoleID.IsNull() {
+		selector = fmt.Sprintf("named %q", state.Name.ValueString())
 		role, err = findRoleByName(ctx, d.client, projectID, state.Name.ValueString())
 	} else {
-		id := state.RoleID.ValueString()
-		role, err = d.client.GetRole(ctx, projectID, id)
+		selector = state.RoleID.ValueString()
+		role, err = d.client.GetRole(ctx, projectID, selector)
 	}
 	if err != nil {
-		resp.Diagnostics.AddError("Lakekeeper API error occurred", fmt.Sprintf("Unable to read role in project %s, %v", projectID, err))
+		resp.Diagnostics.AddError("Lakekeeper API error occurred", fmt.Sprintf("Unable to read role %s in project %s, %v", selector, projectID, err))
 		return
 	}
 	if role.ProjectID != projectID {
@@ -153,27 +155,27 @@ func (d *LakekeeperRoleDataSource) Read(ctx context.Context, req datasource.Read
 	resp.Diagnostics.Append(diags...)
 }
 
+// findRoleByName returns the project's role whose name matches name, ignoring
+// case. Lakekeeper's role search returns only its best fuzzy matches, so when
+// they hold no match, findRoleByName pages through every role of the project
+// to be sure the name is absent.
 func findRoleByName(ctx context.Context, client *api.Client, projectID, name string) (*api.Role, error) {
+	found, err := client.SearchRoles(ctx, projectID, name)
+	if err != nil {
+		return nil, fmt.Errorf("search roles: %w", err)
+	}
+	if match, err := matchRoleName(found, projectID, name); match != nil || err != nil {
+		return match, err
+	}
+	var all []*api.Role
 	seenTokens := map[string]bool{}
-	var match *api.Role
 	var nextPageToken *string
 	for {
 		page, err := client.ListRoles(ctx, projectID, nextPageToken)
 		if err != nil {
-			return nil, fmt.Errorf("list roles in project %s: %w", projectID, err)
+			return nil, fmt.Errorf("list roles: %w", err)
 		}
-		for _, role := range page.Roles {
-			if role.ProjectID != projectID {
-				return nil, fmt.Errorf("role list returned a role from another project")
-			}
-			if !strings.EqualFold(role.Name, name) {
-				continue
-			}
-			if match != nil && match.ID != role.ID {
-				return nil, fmt.Errorf("multiple roles named %q in project %s; use role_id", name, projectID)
-			}
-			match = role
-		}
+		all = append(all, page.Roles...)
 		if page.NextPageToken == nil {
 			break
 		}
@@ -184,8 +186,26 @@ func findRoleByName(ctx context.Context, client *api.Client, projectID, name str
 		seenTokens[token] = true
 		nextPageToken = &token
 	}
-	if match == nil {
-		return nil, fmt.Errorf("no role named %q in project %s", name, projectID)
+	match, err := matchRoleName(all, projectID, name)
+	if err == nil && match == nil {
+		err = fmt.Errorf("no role matches")
+	}
+	return match, err
+}
+
+// matchRoleName returns the role in roles whose name matches name, ignoring
+// case, or nil when none does. It skips roles of other projects, and fails when
+// more than one role matches.
+func matchRoleName(roles []*api.Role, projectID, name string) (*api.Role, error) {
+	var match *api.Role
+	for _, role := range roles {
+		if role.ProjectID != projectID || !strings.EqualFold(role.Name, name) {
+			continue
+		}
+		if match != nil && match.ID != role.ID {
+			return nil, fmt.Errorf("multiple roles match; use role_id")
+		}
+		match = role
 	}
 	return match, nil
 }

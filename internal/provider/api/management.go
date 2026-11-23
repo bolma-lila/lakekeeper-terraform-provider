@@ -173,6 +173,22 @@ func (c *Client) DeleteRole(ctx context.Context, projectID, roleID string) error
 	return wrapErr(c.sdk.Roles.Delete(ctx, roleID, lakekeeper.WithProject(projectID)))
 }
 
+// SearchRoles runs Lakekeeper's fuzzy role search in a project. It returns only
+// the best matches (currently 10), so a role missing from them may still exist:
+// page through ListRoles to prove that a name is absent.
+func (c *Client) SearchRoles(ctx context.Context, projectID, search string) ([]*Role, error) {
+	page, err := c.sdk.Roles.Search(ctx, managementv1.NewSearchRoleRequest(search), lakekeeper.WithProject(projectID))
+	if err != nil {
+		return nil, wrapErr(err)
+	}
+	roles := make([]*Role, len(page.GetRoles()))
+	for i := range page.GetRoles() {
+		r := page.GetRoles()[i]
+		roles[i] = roleFromSDK(&r)
+	}
+	return roles, nil
+}
+
 // RoleListResult holds one page of roles and an optional continuation token.
 type RoleListResult struct {
 	Roles         []*Role

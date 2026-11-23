@@ -48,6 +48,11 @@
 > GET /management/v1/role?pageToken=next [x-project-id: p1]
 < *api.RoleListResult {"Roles":[{"ID":"r1","ProjectID":"p1","Name":"role","Description":"desc","CreatedAt":"2025-01-02T03:04:05.123456Z","UpdatedAt":"2025-02-03T04:05:06Z"}],"NextPageToken":"next"}
 
+## SearchRoles
+> POST /management/v1/search/role [x-project-id: p1]
+  {"search":"role"}
+< []*api.Role [{"ID":"r1","ProjectID":"p1","Name":"role","Description":"desc","CreatedAt":"2025-01-02T03:04:05.123456Z","UpdatedAt":"2025-02-03T04:05:06Z"}]
+
 ## ProvisionUser
 > POST /management/v1/user
   {"email":"u@example.com","id":"oidc~a/b","name":"user","update-if-exists":true,"user-type":"human"}
