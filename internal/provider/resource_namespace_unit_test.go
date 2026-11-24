@@ -23,14 +23,16 @@ func TestNamespaceReadNotFound(t *testing.T) {
 	const warehouse = "22222222-2222-4222-8222-222222222222"
 	const namespace = "33333333-3333-4333-8333-333333333333"
 	for _, tc := range []struct {
-		name        string
-		checkStatus int
-		wantRemoved bool
-		wantError   string
+		name          string
+		warehouseGone bool
+		checkStatus   int
+		wantRemoved   bool
+		wantError     string
 	}{
-		{"deleted", http.StatusNotFound, true, ""},
-		{"hidden", http.StatusOK, false, "exists but cannot be read"},
-		{"check fails", http.StatusServiceUnavailable, false, "Cannot confirm that the namespace was deleted"},
+		{"deleted", false, http.StatusNotFound, true, ""},
+		{"warehouse not listed", true, 0, false, "Cannot confirm that the namespace was deleted"},
+		{"hidden", false, http.StatusOK, false, "exists but cannot be read"},
+		{"check fails", false, http.StatusServiceUnavailable, false, "Cannot confirm that the namespace was deleted"},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			checks := 0
@@ -43,6 +45,10 @@ func TestNamespaceReadNotFound(t *testing.T) {
 					w.WriteHeader(http.StatusNotFound)
 					_, _ = w.Write([]byte(`{"error":{"code":404,"type":"NoSuchNamespaceException","message":"Namespace not found or access denied"}}`))
 				case "GET /management/v1/warehouse":
+					if tc.warehouseGone {
+						_, _ = w.Write([]byte(`{"warehouses":[]}`))
+						return
+					}
 					_, _ = w.Write([]byte(`{"warehouses":[{"id":"` + warehouse + `","warehouse-id":"` + warehouse + `","project-id":"` + project + `","name":"wh","status":"active","protected":false,` +
 						`"allowed-format-versions":[1,2],"delete-profile":{"type":"hard"},"storage-profile":{"type":"gcs","bucket":"b"}}]}`))
 				case "POST /management/v1/action/batch-check":
@@ -85,8 +91,12 @@ func TestNamespaceReadNotFound(t *testing.T) {
 			resp := resource.ReadResponse{State: state}
 			r.Read(ctx, resource.ReadRequest{State: state}, &resp)
 
-			if checks != 1 {
-				t.Errorf("existence checks = %d, want 1", checks)
+			wantChecks := 1
+			if tc.warehouseGone {
+				wantChecks = 0
+			}
+			if checks != wantChecks {
+				t.Errorf("existence checks = %d, want %d", checks, wantChecks)
 			}
 			if removed := resp.State.Raw.IsNull(); removed != tc.wantRemoved {
 				t.Errorf("removed from state = %t, want %t", removed, tc.wantRemoved)

@@ -61,7 +61,6 @@ var wireRoutes = map[string]string{
 	"GET /management/v1/permissions/namespace/n1/assignments": `{"assignments":[{"type":"select","role":"r1"},{"type":"describe","user":"u1"}]}`,
 	"GET /management/v1/permissions/namespace/n1":             `{"managed-access":true,"managed-access-inherited":false}`,
 
-	"GET /management/v1/warehouse":                  `{"warehouses":[` + warehouseJSON + `]}`,
 	"POST /management/v1/action/batch-check":        `{"results":[{"allowed":false}]}`,
 	"GET /catalog/v1/w1/namespaces/sales\x1fbronze": `{"namespace":["sales","bronze"],"properties":{"owner":"me"}}`,
 	"GET /catalog/v1/w1/namespaces":                 `{"namespaces":[["sales"],["catalog"]],"namespace-uuids":["11111111-1111-1111-1111-111111111111","22222222-2222-2222-2222-222222222222"]}`,

@@ -91,7 +91,7 @@ require (
 	github.com/pierrec/lz4/v4 v4.1.29 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/stretchr/objx v0.5.3 // indirect
-	github.com/stretchr/testify v1.12.1 // indirect
+	github.com/stretchr/testify v1.12.1
 	github.com/substrait-io/substrait v0.99.0 // indirect
 	github.com/substrait-io/substrait-protobuf/go v0.85.0 // indirect
 	github.com/twmb/murmur3 v1.1.8 // indirect

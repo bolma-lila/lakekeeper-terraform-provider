@@ -203,7 +203,9 @@ func EncodeNamespacePath(parts []string) (string, error) {
 // cannot see. A namespace load answers 404 both when the namespace is missing
 // and when the caller may not see it; a batch check with error-on-not-found
 // answers 404 only when it is missing. namespaceID selects the namespace when
-// set, otherwise path does.
+// set, otherwise path does. A warehouse missing from the project's list is an
+// error: it was deleted after the namespace load or is hidden from the caller,
+// so the namespace's state is unknown.
 func (c *Client) NamespaceExists(ctx context.Context, projectID, warehouseName, namespaceID string, path []string) (bool, error) {
 	warehouses, err := c.sdk.Warehouses.List(ctx, nil, lakekeeper.WithProject(projectID))
 	if err != nil {
@@ -216,7 +218,7 @@ func (c *Client) NamespaceExists(ctx context.Context, projectID, warehouseName, 
 		}
 	}
 	if warehouseID == "" {
-		return false, fmt.Errorf("check namespace: warehouse %q not found in project %s", warehouseName, projectID)
+		return false, fmt.Errorf("check namespace: warehouse %q is not in the warehouse list of project %s", warehouseName, projectID)
 	}
 	action := managementv1.LakekeeperNamespaceActionGetMetadataAsLakekeeperNamespaceAction(managementv1.NewLakekeeperNamespaceActionGetMetadata("get_metadata"))
 	check := managementv1.NewCatalogActionCheckOperationNamespace(*managementv1.NewCatalogActionCheckOperationNamespaceNamespace(namespaceID, warehouseID, path, action))
