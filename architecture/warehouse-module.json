@@ -50,7 +50,7 @@
         {
           "path": "internal/provider/resource_warehouse.go",
           "line": 61,
-          "end_line": 83
+          "end_line": 82
         },
         {
           "path": "internal/provider/resource_warehouse.go",
@@ -307,8 +307,8 @@
       "sources": [
         {
           "path": "internal/provider/api/warehouses.go",
-          "line": 26,
-          "end_line": 58
+          "line": 27,
+          "end_line": 59
         }
       ]
     },
@@ -323,13 +323,13 @@
       "sources": [
         {
           "path": "internal/provider/api/warehouses.go",
-          "line": 10,
-          "end_line": 24
+          "line": 11,
+          "end_line": 25
         },
         {
           "path": "internal/provider/api/warehouses.go",
-          "line": 60,
-          "end_line": 85
+          "line": 61,
+          "end_line": 86
         }
       ]
     },
@@ -344,13 +344,13 @@
       "sources": [
         {
           "path": "internal/provider/api/warehouses.go",
-          "line": 53,
-          "end_line": 57
+          "line": 54,
+          "end_line": 58
         },
         {
           "path": "internal/provider/api/warehouses.go",
-          "line": 64,
-          "end_line": 67
+          "line": 65,
+          "end_line": 68
         }
       ]
     }

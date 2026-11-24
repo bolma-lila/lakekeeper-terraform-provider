@@ -158,7 +158,7 @@
         {
           "path": "internal/provider/assignment_resource.go",
           "line": 282,
-          "end_line": 286,
+          "end_line": 289,
           "label": "filter by assignee"
         }
       ]
@@ -381,8 +381,8 @@
         },
         {
           "path": "internal/provider/api/namespaces.go",
-          "line": 18,
-          "end_line": 37,
+          "line": 19,
+          "end_line": 38,
           "label": "namespace assignments"
         }
       ]

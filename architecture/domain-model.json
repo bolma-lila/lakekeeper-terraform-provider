@@ -158,7 +158,7 @@
         {
           "path": "internal/provider/resource_project.go",
           "line": 50,
-          "end_line": 70,
+          "end_line": 71,
           "label": "project schema"
         }
       ]
@@ -209,8 +209,8 @@
       "sources": [
         {
           "path": "internal/provider/resource_namespace.go",
-          "line": 71,
-          "end_line": 86,
+          "line": 57,
+          "end_line": 96,
           "label": "namespace schema"
         }
       ]

@@ -100,8 +100,8 @@
         },
         {
           "path": "internal/provider/api/client.go",
-          "line": 83,
-          "end_line": 126,
+          "line": 86,
+          "end_line": 129,
           "label": "api.Error, IsNotFound, wrapErr"
         }
       ]
@@ -114,8 +114,8 @@
       "sources": [
         {
           "path": "go.mod",
-          "line": 20,
-          "end_line": 20,
+          "line": 21,
+          "end_line": 21,
           "label": "SDK dependency"
         },
         {
