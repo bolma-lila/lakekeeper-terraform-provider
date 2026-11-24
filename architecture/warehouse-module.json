@@ -3,14 +3,14 @@
   "diagram_type": "dataflow",
   "meta": {
     "title": "Warehouse module: terraform-provider-lakekeeper",
-    "output": ".archify/dataflow-warehouse-module-20261110-141018/warehouse-module.html",
+    "output": ".archify/dataflow-warehouse-module-20261124-114716/warehouse-module.html",
     "quality_profile": "showcase",
     "locale": "en",
     "repository": {
       "url": "git@github.com:lakekeeper/terraform-provider-lakekeeper.git",
       "provider": "github",
       "link_mode": "local-only",
-      "revision": "ba0f0b6579f42ee9543ab2be0320818ffdb74c34"
+      "revision": "1531783502da6feb09cfb48e64f97e06584563e9"
     },
     "legend": {
       "entries": {
@@ -54,8 +54,8 @@
         },
         {
           "path": "internal/provider/resource_warehouse.go",
-          "line": 212,
-          "end_line": 254
+          "line": 219,
+          "end_line": 312
         }
       ]
     },
@@ -75,8 +75,8 @@
         },
         {
           "path": "internal/provider/resource_warehouse.go",
-          "line": 154,
-          "end_line": 156
+          "line": 153,
+          "end_line": 155
         }
       ]
     },
@@ -96,8 +96,8 @@
         },
         {
           "path": "internal/provider/resource_warehouse.go",
-          "line": 184,
-          "end_line": 208
+          "line": 190,
+          "end_line": 215
         }
       ]
     },
@@ -255,7 +255,7 @@
         {
           "path": "internal/provider/warehouse/storage_profile.go",
           "line": 373,
-          "end_line": 439
+          "end_line": 438
         }
       ]
     },
@@ -307,7 +307,7 @@
       "sources": [
         {
           "path": "internal/provider/api/warehouses.go",
-          "line": 25,
+          "line": 26,
           "end_line": 58
         }
       ]
@@ -323,13 +323,13 @@
       "sources": [
         {
           "path": "internal/provider/api/warehouses.go",
-          "line": 9,
-          "end_line": 20
+          "line": 10,
+          "end_line": 24
         },
         {
           "path": "internal/provider/api/warehouses.go",
           "line": 60,
-          "end_line": 83
+          "end_line": 85
         }
       ]
     },
@@ -349,8 +349,8 @@
         },
         {
           "path": "internal/provider/api/warehouses.go",
-          "line": 61,
-          "end_line": 65
+          "line": 64,
+          "end_line": 67
         }
       ]
     }

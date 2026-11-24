@@ -3,14 +3,14 @@
   "diagram_type": "class",
   "meta": {
     "title": "Domain model: what the provider manages",
-    "output": ".archify/class-domain-model-20261119-132007/domain-model.html",
+    "output": ".archify/class-domain-model-20261124-114659/domain-model.html",
     "quality_profile": "showcase",
     "locale": "en",
     "repository": {
       "url": "git@github.com:lakekeeper/terraform-provider-lakekeeper.git",
       "provider": "github",
       "link_mode": "local-only",
-      "revision": "c97fb219665e8d783cf6a92d2c60f5d8364724bb"
+      "revision": "1531783502da6feb09cfb48e64f97e06584563e9"
     }
   },
   "layout": {
@@ -37,14 +37,14 @@
       "sources": [
         {
           "path": "internal/provider/api/management.go",
-          "line": 171,
-          "end_line": 180,
+          "line": 238,
+          "end_line": 247,
           "label": "api.User"
         },
         {
           "path": "internal/provider/resource_user.go",
           "line": 45,
-          "end_line": 94,
+          "end_line": 99,
           "label": "user schema"
         },
         {
@@ -71,8 +71,8 @@
       "sources": [
         {
           "path": "internal/provider/api/management.go",
-          "line": 14,
-          "end_line": 20,
+          "line": 25,
+          "end_line": 36,
           "label": "api.ServerInfo"
         }
       ]
@@ -93,8 +93,8 @@
         },
         {
           "path": "internal/provider/api/management.go",
-          "line": 63,
-          "end_line": 64,
+          "line": 75,
+          "end_line": 82,
           "label": "GetProject"
         }
       ]
@@ -119,13 +119,13 @@
       "sources": [
         {
           "path": "internal/provider/api/management.go",
-          "line": 87,
-          "end_line": 95,
+          "line": 110,
+          "end_line": 118,
           "label": "api.Role"
         },
         {
           "path": "internal/provider/resource_role.go",
-          "line": 75,
+          "line": 74,
           "end_line": 80,
           "label": "project_id"
         }
@@ -151,14 +151,14 @@
       "sources": [
         {
           "path": "internal/provider/api/management.go",
-          "line": 48,
-          "end_line": 52,
+          "line": 60,
+          "end_line": 64,
           "label": "api.Project"
         },
         {
           "path": "internal/provider/resource_project.go",
           "line": 50,
-          "end_line": 57,
+          "end_line": 70,
           "label": "project schema"
         }
       ]
@@ -183,8 +183,8 @@
       "sources": [
         {
           "path": "internal/provider/warehouse/warehouse.go",
-          "line": 25,
-          "end_line": 32,
+          "line": 24,
+          "end_line": 35,
           "label": "warehouse model"
         }
       ]
@@ -210,7 +210,7 @@
         {
           "path": "internal/provider/resource_namespace.go",
           "line": 71,
-          "end_line": 80,
+          "end_line": 86,
           "label": "namespace schema"
         }
       ]
@@ -235,8 +235,8 @@
       "sources": [
         {
           "path": "internal/provider/api/permissions.go",
-          "line": 10,
-          "end_line": 20,
+          "line": 13,
+          "end_line": 23,
           "label": "api.Assignee"
         },
         {
@@ -305,8 +305,8 @@
         },
         {
           "path": "internal/provider/api/permissions.go",
-          "line": 22,
-          "end_line": 28,
+          "line": 25,
+          "end_line": 31,
           "label": "api.Assignment"
         }
       ],
@@ -345,7 +345,7 @@
         {
           "path": "internal/provider/api/constants.go",
           "line": 18,
-          "end_line": 53,
+          "end_line": 55,
           "label": "grant type constants"
         },
         {

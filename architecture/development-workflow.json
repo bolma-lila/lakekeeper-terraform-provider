@@ -3,14 +3,14 @@
   "diagram_type": "workflow",
   "meta": {
     "title": "Development workflow: from edit to release",
-    "output": ".archify/workflow-development-workflow-20261110-141002/development-workflow.html",
+    "output": ".archify/workflow-development-workflow-20261124-114653/development-workflow.html",
     "quality_profile": "showcase",
     "locale": "en",
     "repository": {
       "url": "git@github.com:lakekeeper/terraform-provider-lakekeeper.git",
       "provider": "github",
       "link_mode": "local-only",
-      "revision": "ba0f0b6579f42ee9543ab2be0320818ffdb74c34"
+      "revision": "1531783502da6feb09cfb48e64f97e06584563e9"
     },
     "legend": {
       "entries": {
@@ -71,8 +71,8 @@
       "sources": [
         {
           "path": "CONTRIBUTING.md",
-          "line": 55,
-          "end_line": 63,
+          "line": 61,
+          "end_line": 65,
           "label": "edit doc sources, not docs/"
         }
       ]
@@ -100,8 +100,8 @@
         },
         {
           "path": "CONTRIBUTING.md",
-          "line": 87,
-          "end_line": 87,
+          "line": 98,
+          "end_line": 98,
           "label": "run before the PR"
         }
       ]
@@ -129,8 +129,8 @@
         },
         {
           "path": "CONTRIBUTING.md",
-          "line": 57,
-          "end_line": 63,
+          "line": 67,
+          "end_line": 67,
           "label": "generated; CI fails if stale"
         }
       ]
@@ -146,14 +146,14 @@
       "sources": [
         {
           "path": "Makefile",
-          "line": 87,
-          "end_line": 88,
+          "line": 102,
+          "end_line": 103,
           "label": "testacc target"
         },
         {
           "path": "CONTRIBUTING.md",
-          "line": 44,
-          "end_line": 53,
+          "line": 48,
+          "end_line": 55,
           "label": "acceptance tests"
         }
       ]
@@ -181,8 +181,8 @@
         },
         {
           "path": "Makefile",
-          "line": 80,
-          "end_line": 85,
+          "line": 95,
+          "end_line": 100,
           "label": "testacc-up / testacc-down"
         }
       ]
@@ -197,8 +197,8 @@
       "sources": [
         {
           "path": "CONTRIBUTING.md",
-          "line": 78,
-          "end_line": 82,
+          "line": 91,
+          "end_line": 93,
           "label": "Conventional Commits"
         }
       ]
@@ -220,14 +220,14 @@
         },
         {
           "path": ".github/workflows/test.yml",
-          "line": 63,
-          "end_line": 64,
+          "line": 79,
+          "end_line": 80,
           "label": "docs must be up to date"
         },
         {
           "path": ".github/workflows/test.yml",
-          "line": 110,
-          "end_line": 142,
+          "line": 126,
+          "end_line": 149,
           "label": "acceptance tests in CI"
         }
       ]
@@ -271,8 +271,8 @@
       "sources": [
         {
           "path": "CONTRIBUTING.md",
-          "line": 83,
-          "end_line": 83,
+          "line": 94,
+          "end_line": 94,
           "label": "maintained by release-please"
         }
       ]

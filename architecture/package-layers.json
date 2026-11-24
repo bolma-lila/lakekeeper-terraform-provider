@@ -3,14 +3,14 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "Package layers: terraform-provider-lakekeeper",
-    "output": ".archify/architecture-package-layers-20261119-132010/package-layers.html",
+    "output": ".archify/architecture-package-layers-20261124-114704/package-layers.html",
     "quality_profile": "showcase",
     "locale": "en",
     "repository": {
       "url": "git@github.com:lakekeeper/terraform-provider-lakekeeper.git",
       "provider": "github",
       "link_mode": "local-only",
-      "revision": "c97fb219665e8d783cf6a92d2c60f5d8364724bb"
+      "revision": "1531783502da6feb09cfb48e64f97e06584563e9"
     }
   },
   "components": [
@@ -47,7 +47,7 @@
       "pos": [660, 40],
       "size": [190, 64],
       "sources": [
-        { "path": "internal/provider/registry.go", "line": 11, "end_line": 24, "label": "allResources / allDataSources" }
+        { "path": "internal/provider/registry.go", "line": 12, "end_line": 25, "label": "allResources / allDataSources" }
       ]
     },
     {
@@ -59,9 +59,9 @@
       "pos": [660, 220],
       "size": [190, 64],
       "sources": [
-        { "path": "internal/provider/resource_role.go", "line": 36, "end_line": 38, "label": "init() registers the resource" },
+        { "path": "internal/provider/resource_role.go", "line": 35, "end_line": 37, "label": "init() registers the resource" },
         { "path": "internal/provider/datasource_project.go", "line": 19, "end_line": 21, "label": "init() registers the data source" },
-        { "path": "internal/provider/resource_role.go", "line": 106, "end_line": 113, "label": "Configure stores r.client" }
+        { "path": "internal/provider/resource_role.go", "line": 105, "end_line": 113, "label": "Configure stores r.client" }
       ]
     },
     {
@@ -75,7 +75,7 @@
       "sources": [
         { "path": "internal/provider/warehouse/warehouse.go", "line": 54, "end_line": 54, "label": "ResourceModel.WarehouseRequest" },
         { "path": "internal/provider/warehouse/warehouse.go", "line": 95, "end_line": 95, "label": "Refresh(prior, warehouse)" },
-        { "path": "internal/provider/resource_warehouse.go", "line": 46, "end_line": 46, "label": "warehouse.ResourceSchema()" }
+        { "path": "internal/provider/resource_warehouse.go", "line": 45, "end_line": 45, "label": "warehouse.ResourceSchema()" }
       ]
     },
     {
@@ -102,7 +102,7 @@
       "size": [190, 64],
       "sources": [
         { "path": "internal/provider/api/client.go", "line": 1, "end_line": 29, "label": "only package that imports the SDK" },
-        { "path": "internal/provider/api/management.go", "line": 55, "end_line": 61, "label": "a method wraps one SDK call" },
+        { "path": "internal/provider/api/management.go", "line": 66, "end_line": 73, "label": "a method wraps one SDK call" },
         { "path": "internal/provider/api/config.go", "line": 37, "end_line": 37, "label": "Config.NewLakekeeperClient" }
       ]
     },
@@ -114,7 +114,7 @@
       "pos": [660, 760],
       "size": [190, 64],
       "sources": [
-        { "path": "go.mod", "line": 25, "end_line": 25, "label": "SDK dependency" }
+        { "path": "go.mod", "line": 20, "end_line": 20, "label": "SDK dependency" }
       ]
     },
     {
@@ -126,7 +126,7 @@
       "pos": [1000, 760],
       "size": [170, 64],
       "sources": [
-        { "path": ".golangci.yml", "line": 6, "end_line": 19, "label": "deny the SDK outside api/" }
+        { "path": ".golangci.yml", "line": 6, "end_line": 17, "label": "deny the SDK outside api/" }
       ]
     }
   ],

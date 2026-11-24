@@ -3,14 +3,14 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "System context: terraform-provider-lakekeeper",
-    "output": ".archify/architecture-system-context-20261119-132013/system-context.html",
+    "output": ".archify/architecture-system-context-20261124-114711/system-context.html",
     "quality_profile": "showcase",
     "locale": "en",
     "repository": {
       "url": "git@github.com:lakekeeper/terraform-provider-lakekeeper.git",
       "provider": "github",
       "link_mode": "local-only",
-      "revision": "c97fb219665e8d783cf6a92d2c60f5d8364724bb"
+      "revision": "1531783502da6feb09cfb48e64f97e06584563e9"
     }
   },
   "components": [
@@ -22,7 +22,7 @@
       "pos": [40, 120],
       "size": [150, 64],
       "sources": [
-        { "path": "main.go", "line": 20, "end_line": 45, "label": "providerserver.Serve" }
+        { "path": "main.go", "line": 20, "end_line": 46, "label": "providerserver.Serve" }
       ]
     },
     {
@@ -34,8 +34,8 @@
       "pos": [310, 120],
       "size": [150, 64],
       "sources": [
-        { "path": "internal/provider/provider.go", "line": 102, "end_line": 222, "label": "Configure builds the client" },
-        { "path": "internal/provider/registry.go", "line": 11, "end_line": 24, "label": "registerResource / registerDataSource" },
+        { "path": "internal/provider/provider.go", "line": 102, "end_line": 221, "label": "Configure builds the client" },
+        { "path": "internal/provider/registry.go", "line": 17, "end_line": 25, "label": "registerResource / registerDataSource" },
         { "path": "internal/provider/resource_project.go", "line": 97, "end_line": 97, "label": "r.client.CreateProject" }
       ]
     },
@@ -48,9 +48,9 @@
       "pos": [570, 120],
       "size": [150, 64],
       "sources": [
-        { "path": "internal/provider/api/client.go", "line": 1, "end_line": 36, "label": "only package that uses the SDK" },
+        { "path": "internal/provider/api/client.go", "line": 1, "end_line": 29, "label": "only package that uses the SDK" },
         { "path": "internal/provider/api/config.go", "line": 37, "end_line": 104, "label": "OIDC token source and TLS" },
-        { "path": "internal/provider/api/management.go", "line": 55, "end_line": 61, "label": "CreateProject calls the SDK" }
+        { "path": "internal/provider/api/management.go", "line": 66, "end_line": 73, "label": "CreateProject calls the SDK" }
       ]
     },
     {
@@ -61,8 +61,8 @@
       "pos": [810, 120],
       "size": [150, 64],
       "sources": [
-        { "path": "go.mod", "line": 25, "end_line": 25, "label": "SDK dependency" },
-        { "path": ".golangci.yml", "line": 6, "end_line": 19, "label": "depguard: only api/ may import it" }
+        { "path": "go.mod", "line": 20, "end_line": 20, "label": "SDK dependency" },
+        { "path": ".golangci.yml", "line": 6, "end_line": 17, "label": "depguard: only api/ may import it" }
       ]
     },
     {

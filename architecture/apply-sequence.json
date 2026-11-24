@@ -3,14 +3,14 @@
   "diagram_type": "sequence",
   "meta": {
     "title": "Apply sequence: one terraform apply through the provider",
-    "output": ".archify/sequence-apply-sequence-20261119-131956/apply-sequence.html",
+    "output": ".archify/sequence-apply-sequence-20261124-114635/apply-sequence.html",
     "quality_profile": "showcase",
     "locale": "en",
     "repository": {
       "url": "git@github.com:lakekeeper/terraform-provider-lakekeeper.git",
       "provider": "github",
       "link_mode": "local-only",
-      "revision": "c97fb219665e8d783cf6a92d2c60f5d8364724bb"
+      "revision": "1531783502da6feb09cfb48e64f97e06584563e9"
     }
   },
   "participants": [
@@ -62,20 +62,20 @@
       "sources": [
         {
           "path": "internal/provider/resource_role.go",
-          "line": 106,
-          "end_line": 114,
+          "line": 105,
+          "end_line": 113,
           "label": "Configure stores r.client"
         },
         {
           "path": "internal/provider/resource_role.go",
-          "line": 117,
-          "end_line": 151,
+          "line": 116,
+          "end_line": 150,
           "label": "Create"
         },
         {
           "path": "internal/provider/resource_role.go",
-          "line": 154,
-          "end_line": 184,
+          "line": 152,
+          "end_line": 191,
           "label": "Read"
         }
       ]
@@ -94,14 +94,14 @@
         },
         {
           "path": "internal/provider/api/management.go",
-          "line": 114,
-          "end_line": 133,
+          "line": 137,
+          "end_line": 156,
           "label": "CreateRole / GetRole"
         },
         {
           "path": "internal/provider/api/client.go",
-          "line": 84,
-          "end_line": 125,
+          "line": 83,
+          "end_line": 126,
           "label": "api.Error, IsNotFound, wrapErr"
         }
       ]
@@ -114,8 +114,8 @@
       "sources": [
         {
           "path": "go.mod",
-          "line": 25,
-          "end_line": 25,
+          "line": 20,
+          "end_line": 20,
           "label": "SDK dependency"
         },
         {
@@ -135,7 +135,7 @@
         {
           "path": "internal/provider/api/config.go",
           "line": 84,
-          "end_line": 94,
+          "end_line": 89,
           "label": "client credentials config"
         }
       ]

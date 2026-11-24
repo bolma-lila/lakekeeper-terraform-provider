@@ -3,14 +3,14 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "Assignment module: descriptor, reconcile and scope adapters",
-    "output": ".archify/architecture-assignment-module-20261119-132004/assignment-module.html",
+    "output": ".archify/architecture-assignment-module-20261124-114648/assignment-module.html",
     "quality_profile": "showcase",
     "locale": "en",
     "repository": {
       "url": "git@github.com:lakekeeper/terraform-provider-lakekeeper.git",
       "provider": "github",
       "link_mode": "local-only",
-      "revision": "c97fb219665e8d783cf6a92d2c60f5d8364724bb"
+      "revision": "1531783502da6feb09cfb48e64f97e06584563e9"
     }
   },
   "components": [
@@ -43,8 +43,8 @@
         },
         {
           "path": "internal/provider/registry.go",
-          "line": 21,
-          "end_line": 24,
+          "line": 22,
+          "end_line": 25,
           "label": "registerResource"
         }
       ]
@@ -95,20 +95,20 @@
       "sources": [
         {
           "path": "internal/provider/assignment_resource.go",
-          "line": 28,
-          "end_line": 83,
+          "line": 30,
+          "end_line": 85,
           "label": "factory and derived schema"
         },
         {
           "path": "internal/provider/assignment_resource.go",
-          "line": 108,
-          "end_line": 188,
+          "line": 113,
+          "end_line": 221,
           "label": "Configure and lifecycle"
         },
         {
           "path": "internal/provider/assignment_resource.go",
-          "line": 190,
-          "end_line": 213,
+          "line": 223,
+          "end_line": 246,
           "label": "ImportState"
         }
       ]
@@ -129,14 +129,14 @@
       "sources": [
         {
           "path": "internal/provider/assignment_resource.go",
-          "line": 242,
-          "end_line": 248,
+          "line": 275,
+          "end_line": 290,
           "label": "ListGrants at the scope"
         },
         {
           "path": "internal/provider/assignment_resource.go",
-          "line": 259,
-          "end_line": 267,
+          "line": 292,
+          "end_line": 300,
           "label": "reconcile reads first"
         }
       ]
@@ -157,8 +157,8 @@
       "sources": [
         {
           "path": "internal/provider/assignment_resource.go",
-          "line": 249,
-          "end_line": 257,
+          "line": 282,
+          "end_line": 286,
           "label": "filter by assignee"
         }
       ]
@@ -179,8 +179,8 @@
       "sources": [
         {
           "path": "internal/provider/assignment_resource.go",
-          "line": 269,
-          "end_line": 283,
+          "line": 302,
+          "end_line": 321,
           "label": "difference to desired set"
         }
       ]
@@ -202,8 +202,8 @@
       "sources": [
         {
           "path": "internal/provider/assignment_resource.go",
-          "line": 284,
-          "end_line": 288,
+          "line": 317,
+          "end_line": 320,
           "label": "skip when equal, else apply"
         },
         {
@@ -237,8 +237,8 @@
         },
         {
           "path": "internal/provider/assignment_adapter.go",
-          "line": 33,
-          "end_line": 68,
+          "line": 42,
+          "end_line": 77,
           "label": "grant conversions"
         }
       ]
@@ -369,20 +369,20 @@
       "sources": [
         {
           "path": "internal/provider/api/permissions.go",
-          "line": 81,
-          "end_line": 100,
+          "line": 125,
+          "end_line": 143,
           "label": "server assignments"
         },
         {
           "path": "internal/provider/api/permissions.go",
-          "line": 108,
-          "end_line": 126,
+          "line": 148,
+          "end_line": 166,
           "label": "project assignments"
         },
         {
           "path": "internal/provider/api/namespaces.go",
-          "line": 53,
-          "end_line": 92,
+          "line": 18,
+          "end_line": 37,
           "label": "namespace assignments"
         }
       ]
@@ -403,8 +403,8 @@
       "sources": [
         {
           "path": "internal/provider/api/permissions.go",
-          "line": 88,
-          "end_line": 99,
+          "line": 125,
+          "end_line": 143,
           "label": "SDK permission calls"
         }
       ]
