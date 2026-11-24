@@ -6,8 +6,11 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/lakekeeper/terraform-provider-lakekeeper/internal/provider/api"
 )
@@ -50,13 +53,21 @@ func (d *lakekeeperNamespacesDataSource) Schema(_ context.Context, _ datasource.
 **Upstream API**: [Lakekeeper REST API docs](https://docs.lakekeeper.io/docs/nightly/api/catalog/#tag/Catalog-API/operation/listNamespaces)`,
 		Attributes: map[string]schema.Attribute{
 			"warehouse_id": schema.StringAttribute{Required: true, MarkdownDescription: "Warehouse UUID."},
-			"parent":       schema.ListAttribute{Optional: true, ElementType: types.StringType, MarkdownDescription: "Namespace levels of the parent whose children to list. Lists the warehouse's top-level namespaces when unset. Each level must be non-empty."},
+			"parent": schema.ListAttribute{
+				Optional:            true,
+				ElementType:         types.StringType,
+				MarkdownDescription: "Namespace levels of the parent whose children to list. Lists the warehouse's top-level namespaces when unset. Each level must be non-empty.",
+				Validators: []validator.List{
+					listvalidator.NoNullValues(),
+					listvalidator.ValueStringsAre(stringvalidator.LengthAtLeast(1)),
+				},
+			},
 			"namespaces": schema.ListNestedAttribute{
 				Computed:            true,
 				MarkdownDescription: "Visible direct child namespaces, sorted by path.",
 				NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{
 					"id":    schema.StringAttribute{Computed: true, MarkdownDescription: "Namespace UUID."},
-					"parts": schema.ListAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "Namespace path levels."},
+					"parts": schema.ListAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "Namespace path levels. A level can contain `.`, and such a namespace can't be used by name with `lakekeeper_namespace` or the `lakekeeper_namespace` data source, because they split `name` on `.`."},
 				}},
 			},
 		},
@@ -84,7 +95,7 @@ func (d *lakekeeperNamespacesDataSource) Read(ctx context.Context, req datasourc
 	}
 	list, err := d.client.ListNamespaces(ctx, warehouse, state.Parent)
 	if err != nil {
-		resp.Diagnostics.AddError("Cannot list namespaces", err.Error())
+		resp.Diagnostics.AddError("Lakekeeper API error occurred", "Unable to list namespaces in warehouse "+warehouse+": "+err.Error())
 		return
 	}
 	state.Namespaces = make([]lakekeeperNamespacesItemModel, 0, len(list))

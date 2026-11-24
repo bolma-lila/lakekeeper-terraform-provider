@@ -49,4 +49,4 @@ data "lakekeeper_namespaces" "instruments" {
 Read-Only:
 
 - `id` (String) Namespace UUID.
-- `parts` (List of String) Namespace path levels.
+- `parts` (List of String) Namespace path levels. A level can contain `.`, and such a namespace can't be used by name with `lakekeeper_namespace` or the `lakekeeper_namespace` data source, because they split `name` on `.`.

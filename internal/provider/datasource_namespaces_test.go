@@ -4,6 +4,7 @@ package provider
 
 import (
 	"fmt"
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -54,6 +55,26 @@ data "lakekeeper_namespaces" "children" {
 					resource.TestCheckResourceAttr("data.lakekeeper_namespaces.children", "namespaces.0.parts.1", "child"),
 				),
 			},
+		},
+	})
+}
+
+// The parent levels are checked before any request: a null or an empty level
+// fails validation.
+func TestAccDataLakekeeperNamespaces_invalidParent(t *testing.T) {
+	config := func(parent string) string {
+		return fmt.Sprintf(`
+		data "lakekeeper_namespaces" "test" {
+			warehouse_id = "22222222-2222-4222-8222-222222222222"
+			parent       = %s
+		}`, parent)
+	}
+
+	resource.ParallelTest(t, resource.TestCase{
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{Config: config(`["a", null]`), ExpectError: regexp.MustCompile(`Null List Value`)},
+			{Config: config(`["a", ""]`), ExpectError: regexp.MustCompile(`string length must be at least 1`)},
 		},
 	})
 }

@@ -23,7 +23,7 @@ Check first that the method doesn't already exist. The package is split by area:
 | [`warehouses.go`](../internal/provider/api/warehouses.go) | warehouses |
 | [`storage.go`](../internal/provider/api/storage.go) | storage profile, storage credential and delete profile conversions |
 | [`permissions.go`](../internal/provider/api/permissions.go) | assignments, access checks and managed access for server, project, warehouse and role |
-| [`namespaces.go`](../internal/provider/api/namespaces.go) | namespace permissions, and `LoadNamespace`, a raw Iceberg REST request |
+| [`namespaces.go`](../internal/provider/api/namespaces.go) | namespace permissions; `LoadNamespace` and `ListNamespaces`, raw Iceberg REST requests sent through `catalogGet`; and `EncodeNamespacePath`, which escapes namespace levels for them |
 | [`constants.go`](../internal/provider/api/constants.go) | enum constants |
 | [`config.go`](../internal/provider/api/config.go) | client construction (OIDC, TLS) |
 

@@ -25,7 +25,7 @@ data "lakekeeper_warehouses" "test" {
 `, project.ID),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("data.lakekeeper_warehouses.test", "project_id", project.ID),
-					resource.TestCheckResourceAttrSet("data.lakekeeper_warehouses.test", "warehouses.#"),
+					resource.TestCheckResourceAttr("data.lakekeeper_warehouses.test", "warehouses.#", "1"),
 					resource.TestCheckResourceAttr("data.lakekeeper_warehouses.test", "warehouses.0.id", warehouse.ID),
 					resource.TestCheckResourceAttr("data.lakekeeper_warehouses.test", "warehouses.0.name", warehouse.Name),
 					resource.TestCheckResourceAttr("data.lakekeeper_warehouses.test", "warehouses.0.protected", "false"),
