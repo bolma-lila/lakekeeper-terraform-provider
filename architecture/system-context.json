@@ -3,14 +3,14 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "System context: terraform-provider-lakekeeper",
-    "output": ".archify/architecture-system-context-20261124-114711/system-context.html",
+    "output": ".archify/architecture-system-context-20261124-160608/system-context.html",
     "quality_profile": "showcase",
     "locale": "en",
     "repository": {
       "url": "git@github.com:lakekeeper/terraform-provider-lakekeeper.git",
       "provider": "github",
       "link_mode": "local-only",
-      "revision": "1531783502da6feb09cfb48e64f97e06584563e9"
+      "revision": "2b9a53fd9886cbeb15c9616c1a573649005c3bfb"
     }
   },
   "components": [

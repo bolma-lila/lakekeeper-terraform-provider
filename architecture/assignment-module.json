@@ -3,14 +3,14 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "Assignment module: descriptor, reconcile and scope adapters",
-    "output": ".archify/architecture-assignment-module-20261124-114648/assignment-module.html",
+    "output": ".archify/architecture-assignment-module-20261124-160557/assignment-module.html",
     "quality_profile": "showcase",
     "locale": "en",
     "repository": {
       "url": "git@github.com:lakekeeper/terraform-provider-lakekeeper.git",
       "provider": "github",
       "link_mode": "local-only",
-      "revision": "1531783502da6feb09cfb48e64f97e06584563e9"
+      "revision": "2b9a53fd9886cbeb15c9616c1a573649005c3bfb"
     }
   },
   "components": [
